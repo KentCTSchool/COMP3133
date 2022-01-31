@@ -7,9 +7,10 @@ async function readFile(filePath) {
         const header = lines[0];
         const canada = lines.filter(country => country.includes('Canada'));
         const us = lines.filter(country => country.includes('United States'));
-
         writeMe('canada', `${header}${canada.toString().toLowerCase()}`);
         writeMe('usa', `${header}${us.toString().toLowerCase()}`);
+
+        
     } catch (error) {
       console.error(`Got an error trying to read the file: ${error.message}`);
     }
@@ -42,6 +43,14 @@ async function writeMe(country, text){
     })
 }
 
+function readF(filePath) {
+    try {
+        const data =  fs.readFileSync(filePath);
+        console.log('ghagagaagga');
+    } catch (error) {
+      console.error(`Got an error trying to read the file: ${error.message}`);
+    }
+}
 
 checkFile('./canada.txt');
 checkFile('./usa.txt');
