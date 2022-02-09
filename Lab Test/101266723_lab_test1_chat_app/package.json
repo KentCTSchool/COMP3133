@@ -1,0 +1,12 @@
+{
+  "name": "101266723_lab_test1_chat_app",
+  "version": "1.0.0",
+  "description": "Working with Chatbot App with the use of Socket, Express, Bootstrap and etc.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Kent Pedrocha",
+  "license": "ISC"
+}
