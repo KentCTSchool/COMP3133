@@ -30,7 +30,7 @@
           <div class="login">
             <h2>Register Account</h2>
             <!-- Signup form -->
-                  <form action="../account_created" method="post">
+                  <form action="/account_created" method="post">
                     <div class="form-group">
                       <input type="text" class="form-control" id="firstname" name="firstname"  placeholder="Enter Name">
                     </div>
@@ -44,7 +44,7 @@
                       <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                   
                     <br>
-                    <button type="submit" class="btn btn-lg btn-block btn-success">Sign up</button>
+                    <button id="submit" type="submit" class="btn btn-lg btn-block btn-success">Sign up</button>
                   </form>
              <!-- End Loging form -->
 
@@ -52,7 +52,21 @@
         </div>
         </div>
     </div>
-
-  
   </body>
+
+  <script>
+    var socket = io();
+    socket.on("connect", () => {
+         console.log(socket.id); 
+     });
+     $(() => {
+         $("#submit").click(()=>{
+          addAccount({firstname: $("#firstname").val(), lastname: $("#lastname").val(), username: $("#username").val(), password: $("#password").val(), createon: Date.now()});
+         })
+        //  getMessages()
+     })
+     function addAccount(acc){
+       $.post('http://localhost:9090/account_created', acc)
+     }
+ </script>
 </html>

@@ -2,32 +2,31 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-    <!-- Loding font -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
+      <!-- Loding font -->
+      <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
 
-    <!-- Custom Styles -->
-    <link rel="stylesheet" type="text/css" href="../css/chat.css">
+      <!-- Custom Styles -->
+      <link rel="stylesheet" type="text/css" href="../css/chat.css">
 
-    <title>Chat System</title>
+      <title>Group Chat</title>
   </head>
+
   <body>
     <br>
+
     <div id="container">
       <aside>
-        <header>
-          <input type="text" placeholder="search">
-        </header>
         <ul>
           <li>
             <!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt=""> -->
-            <div id="room">
+            <div id='room'>
 
             </div>
           </li>
@@ -37,16 +36,16 @@
         <header>
           <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
           <div>
-            <h2>Chat with Vincent Porter</h2>
+            <h2 id="username"></h2>
             <h3>already 1902 messages</h3>
           </div>
           <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
         </header>
-        <ul id="chat">
+        <ul id="messages">
         </ul>
         <footer>
-          <textarea placeholder="Type your message"></textarea>
-          <button id="submit" onclick="sendMessage()" href="#">Send</button>
+          <textarea id='message' placeholder="Type your message"></textarea>
+          <button id="send">Send</button>
         </footer>
       </main>
     </div>
@@ -54,46 +53,31 @@
 
   <script src = "/socket.io/socket.io.js"></script>
   <script>
-      const client = io()
-      //client.emit('message', {name : 'Pritesh'})
-      client.on('welcome', (data) => {
-          console.log(data)
-       //    addMessage(data)
+   var socket = io();
+   socket.on("connect", () => {
+        console.log(socket.id); 
+    });
+    $(() => {
+        $("#send").click(()=>{
+            sendMessage({name: $("#name").val(), message: $("#message").val()});
+        })
+        getMessages()
+    })
+
+    socket.on('message', addMessages)
+
+    function addMessages(message){
+        $("#messages").append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`)
+    }
+
+    function getMessages(){
+      $.get('http://localhost:9090/messages', (data) => {
+        data.forEach(addMessages);
       })
+    }
 
-
-      client.on('newMessage', (message) => {
-           //console.log(data)
-           const data = `          <li class="me">
-            <div class="entete">
-              <h3>10:12AM, Today</h3>
-              <h2>${message.sender}</h2>
-              <span class="status blue"></span>
-            </div>
-            <div class="triangle"></div>
-            <div class="message">
-              ${message.message}
-            </div>
-          </li>`
-           addMessage(data)
-       })
-
-       function addMessage(message){
-           //console.log(data)
-           document.getElementById('chat').innerHTML += '<div>' +  message + '</div>'
-       }
-
-      function sendMessage(){
-            var msg = document.getElementById('message').value
-            var roomName = document.getElementById('room').value
-            if(roomName.length == 0){
-            }else{
-                msg = {
-                    room: roomName,
-                    message: document.getElementById('message').value
-                }
-                client.emit('roomMessage', msg)
-            }
-       }
+    function sendMessage(message){
+      $.post('http://localhost:9090/messages', message)
+    }
   </script>
 </html>

@@ -1,15 +1,17 @@
 const app = require('express')()
 const http = require('http').createServer(app)
 const cors = require('cors')
+const PORT = 3000
+
+//Create Server Side Socket
+const io = require('socket.io')(http)
 var path = require('path');
 const userModel = require('../models/user');
 // const req = require('express/lib/request')
 // const res = require('express/lib/response')
-const { Socket } = require('socket.io')
-const PORT = 3000
+// const { Socket } = require('socket.io')
+// const PORT = 3000
 
-//Create Server Side socket
-const io = require('socket.io')(http)
 
 app.use(cors())
 //Default Express GET
@@ -19,24 +21,24 @@ app.get("/", (req, res) => {
 //Read ALL
 app.get('/views/sign_up.html', async (req, res) => {
     res.sendFile(path.resolve(__dirname + "/../views/sign_up.html"))
+    // console.log("aaa")
 });
+
 app.post('/account_created', async (req, res) => {
-    const user = {        
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        username: req.body.username,
-        password: req.body.password
-    } 
-    const newUser =  new userModel(user)
-    console.log(user)
-    try {
-      await newUser.save();
-      res.status(201).send('Created');
-    } catch (err) {
-      res.status(500).send(err);
+  let user = new userModel(req.body);
+  user.save((err) =>{ 
+    if(err)
+    {
+      //sendStatus(500);
+      console.log(err)
     }
 
+    //Send Message to all users
+    io.emit('message', req.body);
+    res.sendStatus(200);
+  })
 });
+
 app.get('/views/home.html', async (req, res) => {
     res.sendFile(path.resolve(__dirname + "/../views/home.html"))
 });
@@ -44,6 +46,7 @@ app.get('/views/home.html', async (req, res) => {
 app.get('/views/chat.html', async (req, res) => {
     res.sendFile(path.resolve(__dirname + "/../views/chat.html"))
 });
+
 
 
 io.on('connection', (socket) => {
@@ -82,13 +85,15 @@ io.on('connection', (socket) => {
     socket.on('roomMessage', (data) => {
         console.log(data)
         const msg = {
-            sender: data.username,
+            sender: socket.id,
             message: data.message
         }
+        // 1 - 1 message
+        // socket.broadcast.to(socket.id).emit('message', msg)
+        // io.to(socket.id).emit('message', msg)
+
+        //to all user inside the room
         socket.broadcast.to(data.room).emit('newMessage', msg)
     })
-})
-
-
-
+});
 module.exports = app

@@ -36,15 +36,15 @@
                       <input type="text" class="form-control" id="username"  placeholder="Username">
                     </div>
                     <div class="form-group">
-                        <select id="room">
-                          <option value="select" selected="selected" disabled>Rooms</option>
+                        <select id = "room" type = "text" name = "room" value = "" >
+                          <option value="select" selected="selected" disabled>Select Room</option>
                           <option value="news">news</option>
-                          <option value="covid_19" selected="selected">covid 19</option>
+                          <option value="covid_19">covid 19</option>
                           <option value="NodeJS">NodeJS</option>
                         </select>
                     </div>  
                     <br>
-                    <button type="submit" class="btn btn-lg btn-block btn-success" onclick="joinRoom()">Join Room</button>
+                    <button type="submit" class="btn btn-lg btn-block btn-success">Join Room</button>
                   </form>
              <!-- End Loging form -->
           </div>
@@ -54,23 +54,32 @@
   </body>
 
   <script src = "/socket.io/socket.io.js"></script>
-   <script>
-       const client = io()
-       //client.emit('message', {name : 'Pritesh'})
-       client.on('welcome', (data) => {
-           console.log(data)
-        //    addMessage(data)
-       })
+  <script>
+   var socket = io();
+   socket.on("connect", () => {
+        console.log(socket.id); 
+    });
+    $(() => {
+        $("#send").click(()=>{
+            sendMessage({name: $("#name").val(), message: $("#message").val()});
+        })
+        getMessages()
+    })
 
-       function joinRoom(){
-           var roomName = document.getElementById('room').value
-           var name = document.getElementById('username').value
-           
-           msg = {
-                    room: roomName,
-                    username: name
-                }
-           client.emit('joinroom', msg)
-       }
-   </script>
+    socket.on('message', addMessages)
+
+    function addMessages(message){
+        $("#messages").append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`)
+    }
+
+    function getMessages(){
+      $.get('http://localhost:9090/messages', (data) => {
+        data.forEach(addMessages);
+      })
+    }
+
+    function sendMessage(message){
+      $.post('http://localhost:9090/messages', message)
+    }
+  </script>
 </html>

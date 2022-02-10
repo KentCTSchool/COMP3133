@@ -29,13 +29,13 @@
           <div class="login">
             <h2>Chatbot Application</h2>
             <!-- Loging form -->
-                  <form>
+                  <form action="/login" method="get">
                     <div class="form-group">
-                      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                      <input type="text" class="form-control" id="username" placeholder="Enter email" required>
                       
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                      <input type="password" class="form-control" id="password" placeholder="Password" required>
                     </div>
 
                       <div class="form-check">
@@ -47,7 +47,7 @@
                     </div>
                   
                     <br>
-                    <button type="submit" class="btn btn-lg btn-block btn-success">Sign in</button>
+                    <button id="submit" type="submit" class="btn btn-lg btn-block btn-success" >Sign in</button>
                   </form>
              <!-- End Loging form -->
 
@@ -55,7 +55,21 @@
         </div>
         </div>
     </div>
-
-
   </body>
+
+  <script>
+    var socket = io();
+    socket.on("connect", () => {
+         console.log(socket.id); 
+     });
+     $(() => {
+         $("#submit").click(()=>{
+          findAcc({username: $("#username").val(), password: $("#password").val()});
+         })
+     })
+
+     function findAcc(message){
+       $.get('http://localhost:9090/login', message)
+     }
+ </script>
 </html>
