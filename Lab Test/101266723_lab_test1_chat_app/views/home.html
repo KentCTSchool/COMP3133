@@ -31,30 +31,46 @@
           <div class="login">
             <h1>Chat app</h1>
             <!-- chat app form -->
-                  <form>
+                  <form action="/views/chat.html" method="get">
                     <div class="form-group">
-                      <input type="text" class="form-control" id=""  placeholder="Username" disabled>
+                      <input type="text" class="form-control" id="username"  placeholder="Username">
                     </div>
                     <div class="form-group">
-                        <div class="dropdown">
-                            <button class="dropbtn">Dropdown</button>
-                            <div class="dropdown-content">
-                              <a href="#">Link 1</a>
-                              <a href="#">Link 2</a>
-                              <a href="#">Link 3</a>
-                            </div>
-                          </div>
+                        <select id="room">
+                          <option value="select" selected="selected" disabled>Rooms</option>
+                          <option value="news">news</option>
+                          <option value="covid_19" selected="selected">covid 19</option>
+                          <option value="NodeJS">NodeJS</option>
+                        </select>
                     </div>  
                     <br>
-                    <button type="submit" class="btn btn-lg btn-block btn-success">Join Room</button>
+                    <button type="submit" class="btn btn-lg btn-block btn-success" onclick="joinRoom()">Join Room</button>
                   </form>
              <!-- End Loging form -->
-
           </div>
         </div>
         </div>
     </div>
-
-
   </body>
+
+  <script src = "/socket.io/socket.io.js"></script>
+   <script>
+       const client = io()
+       //client.emit('message', {name : 'Pritesh'})
+       client.on('welcome', (data) => {
+           console.log(data)
+        //    addMessage(data)
+       })
+
+       function joinRoom(){
+           var roomName = document.getElementById('room').value
+           var name = document.getElementById('username').value
+           
+           msg = {
+                    room: roomName,
+                    username: name
+                }
+           client.emit('joinroom', msg)
+       }
+   </script>
 </html>
