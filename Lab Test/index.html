@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Socket Example</title>
+   </head>
+   <body>
+       <h1>Sample ChatApp</h1>
+      <div id = "error-container"></div>
+      <input id = "name" type = "text" name = "name" value = "" 
+         placeholder = "Enter your name!">
+      <button type = "button" name = "button" onclick = "setUsername()">
+         Send!
+      </button>
+      <br/>
+      <input id = "room" type = "text" name = "room" value = "" 
+         placeholder = "Enter room name!">
+      <button type = "button" name = "button" onclick = "joinRoom()">
+         Join Room!
+      </button>
+
+      <br/>
+      <input id = "message" type = "text" name = "message" value = "" 
+         placeholder = "Enter message to send!">
+      <button type = "button" name = "button" onclick = "sendMessage()">
+         Send Message!
+      </button>
+
+      <h3>Chat History</h3>
+      <div id = "message-container"></div>
+   </body>
+
+   <script src = "/socket.io/socket.io.js"></script>
+   <script>
+       const client = io()
+       //client.emit('message', {name : 'Pritesh'})
+
+       client.on('welcome', (data) => {
+           console.log(data)
+        //    addMessage(data)
+       })
+
+       client.on('newMessage', (message) => {
+           //console.log(data)
+           const data = `<b>${message.sender}:</b> ${message.message}`
+           addMessage(data)
+       })
+       function addMessage(message){
+           //console.log(data)
+           document.getElementById('message-container').innerHTML += '<div>' +  message + '</div>'
+       }
+       function setUsername(){
+           client.emit('newUser', document.getElementById('name').value)
+       }
+
+       function joinRoom(){
+           var roomName = document.getElementById('room').value
+           client.emit('joinroom', roomName)
+       }
+
+       function sendMessage(){
+            var msg = document.getElementById('message').value
+            var roomName = document.getElementById('room').value
+            if(roomName.length == 0){
+                client.emit('message', msg)
+                addMessage(`Me: ${msg}`)
+            }else{
+                msg = {
+                    room: roomName,
+                    message: document.getElementById('message').value
+                }
+                client.emit('roomMessage', msg)
+            }
+       }
+   </script>
+</html>
