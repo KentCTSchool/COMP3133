@@ -1,0 +1,30 @@
+
+<div class="content ">
+<h2>Mission Details</h2>
+<mat-card class="example-card border"> 
+    <mat-card-header>
+      <div mat-card-avatar><img mat-card-image [src]="missionDetails[0].links.mission_patch_small" alt="Photo of mission"/></div>
+      
+      <mat-card-title><strong>{{missionDetails[0].mission_name}}</strong></mat-card-title>
+      <mat-card-title>Name: {{missionDetails[0].mission_name}}</mat-card-title>
+      <mat-card-subtitle>Launch Year: {{missionDetails[0].launch_year}}</mat-card-subtitle>
+      <mat-card-title><strong>Rocket</strong></mat-card-title>
+      <mat-card-subtitle>Name: {{missionDetails[0].rocket.rocket_name}}</mat-card-subtitle>
+      <mat-card-subtitle>Type: {{missionDetails[0].rocket.rocket_type}}</mat-card-subtitle>
+      <mat-card-title><strong>Launch Site</strong></mat-card-title>
+      <mat-card-subtitle>Name: {{missionDetails[0].launch_site.site_name}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-card-subtitle><strong>Launch Details</strong></mat-card-subtitle>
+        {{missionDetails[0].details}}
+        <mat-card-subtitle><strong>More Info</strong></mat-card-subtitle>
+        <a target="_blank" href="{{missionDetails[0].links.wikipedia}}"><mat-icon >event_note</mat-icon></a>
+        <a target="_blank" href="{{missionDetails[0].links.video_link}}"><mat-icon>ondemand_video</mat-icon></a>
+        <a target="_blank" href="{{missionDetails[0].links.wikipedia}}"><mat-icon>link</mat-icon></a>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="Warn" [routerLink]="['/missionlist']">Back</button>
+    </mat-card-actions>
+</mat-card>
+
+</div>

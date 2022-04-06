@@ -1,0 +1,71 @@
+/* Google fonts I used */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600&display=swap');
+
+/* Each browser have different margin, so, we set ours here */
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+/* We used color variables to be easily update everything */
+:root {
+    --color-bg: #ffffff;
+    --color-bg-variant: #f0f3e7;
+    --color-primary: #dde0d3;
+    --color-primary-variant: #b7b7a4;
+    --color-white: #fff;
+    --color-text: #030303;
+    --color-light: rgba(255, 255, 255, 0.6);
+
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    background:  var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.7;
+}
+
+/* General Styles for the Portfolio Website */
+
+.container {
+    width: var(--container-width-lg);
+    margin: 0 auto;
+}
+
+h1, h2 {
+    font-weight: 500;
+}
+
+h1 {
+    text-align: ;
+    font-size: 2.5rem;
+}
+
+.content {
+    max-width: 600px;
+    margin: auto;
+}
+.border {
+    background: var(--color-bg-variant);
+    border-radius: 0 0 2rem 2rem;
+    border: 1px solid var(--color-primary);
+    height: fit-content;
+    transition: var(--transition);
+    margin-bottom: 0.8rem;
+}
+
+.border:hover {
+    background: transparent;
+    border-color: var(--color-primary-variant);
+    cursor: default;
+}
