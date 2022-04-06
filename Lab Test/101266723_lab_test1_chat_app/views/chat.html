@@ -1,0 +1,83 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+      <!-- Loding font -->
+      <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
+
+      <!-- Custom Styles -->
+      <link rel="stylesheet" type="text/css" href="../css/chat.css">
+
+      <title>Group Chat</title>
+  </head>
+
+  <body>
+    <br>
+
+    <div id="container">
+      <aside>
+        <ul>
+          <li>
+            <!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt=""> -->
+            <div id='room'>
+
+            </div>
+          </li>
+        </ul>
+      </aside>
+      <main>
+        <header>
+          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
+          <div>
+            <h2 id="username"></h2>
+            <h3>already 1902 messages</h3>
+          </div>
+          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
+        </header>
+        <ul id="messages">
+        </ul>
+        <footer>
+          <textarea id='message' placeholder="Type your message"></textarea>
+          <button id="send">Send</button>
+        </footer>
+      </main>
+    </div>
+  </body>
+
+  <script src = "/socket.io/socket.io.js"></script>
+  <script>
+   var socket = io();
+   socket.on("connect", () => {
+        console.log(socket.id); 
+    });
+    $(() => {
+        $("#send").click(()=>{
+            sendMessage({name: $("#name").val(), message: $("#message").val()});
+        })
+        getMessages()
+    })
+
+    socket.on('message', addMessages)
+
+    function addMessages(message){
+        $("#messages").append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`)
+    }
+
+    function getMessages(){
+      $.get('http://localhost:9090/messages', (data) => {
+        data.forEach(addMessages);
+      })
+    }
+
+    function sendMessage(message){
+      $.post('http://localhost:9090/messages', message)
+    }
+  </script>
+</html>

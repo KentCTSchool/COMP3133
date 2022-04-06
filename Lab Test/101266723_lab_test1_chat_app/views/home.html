@@ -1,0 +1,85 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Loding font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+
+    <title>Sign up</title>
+  </head>
+  <body>
+    <!-- Backgrounds -->
+    <div id="login-bg" class="container-fluid">
+      <div class="bg-img"></div>
+      <div class="bg-color"></div>
+    </div>
+    <!-- End Backgrounds -->
+
+    <div class="container" id="login">
+        <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="login">
+            <h1>Chat app</h1>
+            <!-- chat app form -->
+                  <form action="/views/chat.html" method="get">
+                    <div class="form-group">
+                      <input type="text" class="form-control" id="username"  placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <select id = "room" type = "text" name = "room" value = "" >
+                          <option value="select" selected="selected" disabled>Select Room</option>
+                          <option value="news">news</option>
+                          <option value="covid_19">covid 19</option>
+                          <option value="NodeJS">NodeJS</option>
+                        </select>
+                    </div>  
+                    <br>
+                    <button type="submit" class="btn btn-lg btn-block btn-success">Join Room</button>
+                  </form>
+             <!-- End Loging form -->
+          </div>
+        </div>
+        </div>
+    </div>
+  </body>
+
+  <script src = "/socket.io/socket.io.js"></script>
+  <script>
+   var socket = io();
+   socket.on("connect", () => {
+        console.log(socket.id); 
+    });
+    $(() => {
+        $("#send").click(()=>{
+            sendMessage({name: $("#name").val(), message: $("#message").val()});
+        })
+        getMessages()
+    })
+
+    socket.on('message', addMessages)
+
+    function addMessages(message){
+        $("#messages").append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`)
+    }
+
+    function getMessages(){
+      $.get('http://localhost:9090/messages', (data) => {
+        data.forEach(addMessages);
+      })
+    }
+
+    function sendMessage(message){
+      $.post('http://localhost:9090/messages', message)
+    }
+  </script>
+</html>

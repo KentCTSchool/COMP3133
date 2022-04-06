@@ -1,0 +1,72 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Loding font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+
+    <title>Sign up</title>
+  </head>
+  <body>
+    <!-- Backgrounds -->
+    <div id="login-bg" class="container-fluid">
+      <div class="bg-img"></div>
+      <div class="bg-color"></div>
+    </div>
+    <!-- End Backgrounds -->
+    <div class="container" id="login">
+        <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="login">
+            <h2>Register Account</h2>
+            <!-- Signup form -->
+                  <form action="/account_created" method="post">
+                    <div class="form-group">
+                      <input type="text" class="form-control" id="firstname" name="firstname"  placeholder="Enter Name">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter Name">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  
+                    <br>
+                    <button id="submit" type="submit" class="btn btn-lg btn-block btn-success">Sign up</button>
+                  </form>
+             <!-- End Loging form -->
+
+          </div>
+        </div>
+        </div>
+    </div>
+  </body>
+
+  <script>
+    var socket = io();
+    socket.on("connect", () => {
+         console.log(socket.id); 
+     });
+     $(() => {
+         $("#submit").click(()=>{
+          addAccount({firstname: $("#firstname").val(), lastname: $("#lastname").val(), username: $("#username").val(), password: $("#password").val(), createon: Date.now()});
+         })
+        //  getMessages()
+     })
+     function addAccount(acc){
+       $.post('http://localhost:9090/account_created', acc)
+     }
+ </script>
+</html>
