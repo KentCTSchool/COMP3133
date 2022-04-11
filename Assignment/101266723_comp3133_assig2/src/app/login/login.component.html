@@ -1,0 +1,27 @@
+<div>
+ <mat-card>
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" >
+    <div class="example-container">
+      <p>
+      <label for="username">Username: </label>
+        <mat-form-field appearance="fill" [floatLabel]="floatLabelControl.value">
+          <mat-label>Enter more than 4 letters</mat-label>
+          <input matInput placeholder="e.g. kentpedrocha" required id="username" name="username" ngModel>
+          <mat-error *ngIf="username.invalid">{{getErrorMessage()}}</mat-error>
+        </mat-form-field>        
+      </p>
+      <p>
+      <label>Password: </label>
+      <mat-form-field appearance="fill">
+        <mat-label>Enter your password</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" id="password" name="password" placeholder="*******" ngModel> 
+        </mat-form-field>         
+      </p>
+      <p>
+          <button mat-button color="accent"  type="submit">Login</button>
+          <button mat-button  color="basic" routerLink="/sign_up">Sign up</button>
+      </p>
+    </div>
+  </form>
+</mat-card> 
+</div>

@@ -1,0 +1,58 @@
+<div>
+<mat-card>
+    <form #createForm="ngForm" (ngSubmit)="onSubmit(createForm)" >
+      <div class="example-container">
+        <p>
+          <label>Username: </label>
+          <mat-form-field appearance="fill">
+            <mat-label>Username: </mat-label>
+            <input matInput placeholder="kent.pedrocha" name="username" [formControl]="username" required ngModel>
+            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+          </mat-form-field>
+        </p>
+        <p>
+          <label>Firstname: </label>
+          <mat-form-field appearance="fill">
+            <mat-label>Firstname: </mat-label>
+            <input matInput placeholder="Pedrocha" name="firstname" [formControl]="firstname" required ngModel>
+            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+          </mat-form-field>            
+        </p>
+
+        <p>
+          <label>Lastname: </label>
+          <mat-form-field appearance="fill">
+            <mat-label>Lastname: </mat-label>
+            <input matInput placeholder="Pedrocha" name="lastname" [formControl]="lastname" required ngModel>
+            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+          </mat-form-field>
+        </p>
+        <p>
+          <label>Password: </label>
+          <mat-form-field appearance="fill">
+            <mat-label>Enter your password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" id="password" name="password"  [formControl]="password" placeholder="*****" ngModel> 
+            </mat-form-field> 
+        </p>
+        <p>
+          <label>Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+          <mat-form-field appearance="fill">
+            <mat-label>Email: </mat-label>
+            <input matInput placeholder="pat@example.com" name="email" [formControl]="email" required ngModel>
+            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+          </mat-form-field>
+        </p>
+        <p>
+          <label>Type of Account: </label><br>
+          <mat-radio-group [formControl]="floatLabelControl">
+            <mat-radio-button value="user" name="type">User</mat-radio-button>
+            <mat-radio-button value="admin" name="type">Admin</mat-radio-button>
+          </mat-radio-group>
+        </p>
+          <button mat-button color="accent" routerLink="/sign_up" type="submit">Sign up</button>
+          <button mat-button  color="basic" routerLink="/login">Login</button>
+      </div>        
+    </form>
+</mat-card>
+
+</div>

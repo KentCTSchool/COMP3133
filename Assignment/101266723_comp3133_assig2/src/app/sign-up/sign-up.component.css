@@ -1,0 +1,28 @@
+.center {
+    height: 200px;
+    position: relative;
+    border: 3px solid green;
+  }
+  
+  .center p {
+    margin: 2;
+    position: relative;
+    top: 50%;
+    left: 50%;
+  }
+  .right {
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    border: 3px solid #73AD21;
+    padding: 10px;
+  }
+  
+  mat-card {
+      text-align: center;
+  }
+    
+  div {
+  width: 50%;
+  margin: 10% auto auto auto;
+  }
